@@ -34,10 +34,13 @@ import org.json.JSONObject;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.xbarnes.StructureInterfaces.AbsFactoryAthlete;
+import com.xbarnes.StructureInterfaces.AthleteFactory;
 
 public class HttpConnection {
 	
     private final static CloseableHttpClient httpClient = HttpClients.createDefault();
+    private AbsFactoryAthlete absAthlete;
 
     private void close() throws IOException {
         httpClient.close();
@@ -46,7 +49,6 @@ public class HttpConnection {
     public void getCrossfitData() {
 
         try {
-
             // Sending get request
             StringBuffer response = new StringBuffer();
             URIBuilder builderURL = new URIBuilder("https://games.crossfit.com/competitions/api/v1/competitions/open/2020/leaderboards?");
@@ -70,16 +72,11 @@ public class HttpConnection {
             @SuppressWarnings("deprecation")
             JsonObject obj = new JsonParser().parse(response.toString()).getAsJsonObject();
             JsonArray objFiltered = obj.getAsJsonArray("leaderboardRows");
+            ArrayList <Athlete> athletes = new ArrayList<Athlete>(); 
             for (Object o : objFiltered) {
-                JsonObject jsonLineItem = (JsonObject) o;
-                JsonObject jsonEntrantLine = jsonLineItem.getAsJsonObject("entrant");
-                String key = jsonEntrantLine.get("competitorName").toString();
-                System.out.println(key);
-                //String value = jsonLineItem.get("ui").toString();
-                //System.out.println(value);
+                athletes.add(this.createAthleteFromJson(o));
+
             }
-            //JsonArray objFiltered2 = objFiltered.getAsJson
-            //JsonArray objArray2 = (JsonArray)objFiltered.getAsJsonArray("entrant");
             in.close();
 
         } catch (IOException e) {
@@ -89,4 +86,29 @@ public class HttpConnection {
         }
     }
 
+    public Athlete createAthleteFromJson(Object o) {
+        JsonObject jsonLineItem = (JsonObject) o;
+        JsonObject jsonEntrantLine = jsonLineItem.getAsJsonObject("entrant");
+        int id = Integer.parseInt(jsonEntrantLine.get("competitorId").toString());
+        String key = jsonEntrantLine.get("competitorName").toString();
+        String firstName = jsonEntrantLine.get("firstName").toString();
+        String lastName = jsonEntrantLine.get("lastName").toString();
+        boolean status = true;
+        char gender = jsonEntrantLine.get("gender").toString().charAt(0);
+        String countryOfOrigin = jsonEntrantLine.get("countryOfOriginName").toString();
+        String countryOfOriginCode = jsonEntrantLine.get("countryOfOriginCode").toString();
+        String affiliateName = jsonEntrantLine.get("affiliateName").toString();
+        String height = jsonEntrantLine.get("height").toString();
+        String weight = jsonEntrantLine.get("weight").toString();
+        int divisionId = Integer.parseInt(jsonEntrantLine.get("divisionId").toString());
+        int affiliateID = Integer.parseInt(jsonEntrantLine.get("affiliateId").toString());
+        int age = Integer.parseInt(jsonEntrantLine.get("age").toString());
+        absAthlete = new AthleteFactory();
+        return absAthlete.createAthlete(id, firstName, lastName, status, gender, countryOfOrigin, countryOfOriginCode, divisionId, affiliateID, affiliateName, age, height, weight);
+        
+    }
 }
+/**
+ *
+ * @author xbarn
+ */ 

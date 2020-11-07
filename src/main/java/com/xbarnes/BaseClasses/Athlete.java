@@ -28,7 +28,7 @@ public class Athlete {
     
     public Athlete(int id, String compName, String lastName, boolean status, char gender, String countryOfOrigin, String countryOfOriginCode, int divisionId, int affiliateID, String affiliateName, int age, String height, String weight) {
         this.id = id;
-        this.compName = compName;
+        this.firstName = compName;
         this.lastName = lastName;
         this.status = status;
         this.gender = gender;
