@@ -11,7 +11,7 @@ import com.xbarnes.BaseClasses.Athlete;
  *
  * @author xbarn
  */
-public class AthleteFactory implements absFactoryAthlete {
+public class AthleteFactory implements AbsFactoryAthlete {
 
     @Override
     public Athlete createAthlete(int id, String compName, String lastName, boolean status, char gender, String countryOfOrigin, String countryOfOriginCode, int divisionId, int affiliateID, String affiliateName, int age, String height, String weight) {
