@@ -10,5 +10,9 @@ package com.xbarnes.BaseClasses;
  * @author xbarn
  */
 public class MainController {
-    
+
+    public void startProcess() {
+        HttpConnection http = new HttpConnection();
+        http.getCrossfitData();
+    }
 }

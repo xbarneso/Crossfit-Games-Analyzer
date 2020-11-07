@@ -16,8 +16,8 @@ public class MainProgram {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        HttpConnection http = new HttpConnection();
-        http.getCrossfitData();
+        MainController mainC = new MainController();
+        mainC.startProcess();
     }
-    
+
 }
